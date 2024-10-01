@@ -86,8 +86,9 @@ class CoClustering(AlgoBase):
         cdef np.ndarray[np.double_t, ndim=2] avg_cocltr
 
         cdef np.ndarray[np.double_t] errors
-        cdef int u, i, r, uc, ic
-        cdef double est
+        cdef int u, i, uc, ic
+        # WGL changed ratings to doubles
+        cdef double est, r
 
         # Randomly assign users and items to intial clusters
         rng = get_rng(self.random_state)
@@ -173,16 +174,22 @@ class CoClustering(AlgoBase):
         cdef np.ndarray[np.int_t, ndim=2] count_cocltr
 
         # Sum of ratings for entities in each cluster
-        cdef np.ndarray[np.int_t] sum_cltr_u
-        cdef np.ndarray[np.int_t] sum_cltr_i
-        cdef np.ndarray[np.int_t, ndim=2] sum_cocltr
+        # cdef np.ndarray[np.int_t] sum_cltr_u
+        # cdef np.ndarray[np.int_t] sum_cltr_i
+        # cdef np.ndarray[np.int_t, ndim=2] sum_cocltr
+        # WGL changed these to doubles to support continous ratings.
+        cdef np.ndarray[np.double_t] sum_cltr_u
+        cdef np.ndarray[np.double_t] sum_cltr_i
+        cdef np.ndarray[np.double_t, ndim=2] sum_cocltr
 
         # The averages of each cluster (what will be returned)
         cdef np.ndarray[np.double_t] avg_cltr_u
         cdef np.ndarray[np.double_t] avg_cltr_i
         cdef np.ndarray[np.double_t, ndim=2] avg_cocltr
 
-        cdef int u, i, r, uc, ic
+        cdef int u, i, uc, ic
+        # WGL changed ratings to doubles
+        cdef double r
         cdef double global_mean = self.trainset.global_mean
 
         # Initialize everything to zero
@@ -190,9 +197,13 @@ class CoClustering(AlgoBase):
         count_cltr_i = np.zeros(self.n_cltr_i, np.int_)
         count_cocltr = np.zeros((self.n_cltr_u, self.n_cltr_i), np.int_)
 
-        sum_cltr_u = np.zeros(self.n_cltr_u, np.int_)
-        sum_cltr_i = np.zeros(self.n_cltr_i, np.int_)
-        sum_cocltr = np.zeros((self.n_cltr_u, self.n_cltr_i), np.int_)
+        # sum_cltr_u = np.zeros(self.n_cltr_u, np.int_)
+        # sum_cltr_i = np.zeros(self.n_cltr_i, np.int_)
+        # sum_cocltr = np.zeros((self.n_cltr_u, self.n_cltr_i), np.int_)
+        # WGL changed cluster sums to doubles
+        sum_cltr_u = np.zeros(self.n_cltr_u, np.double)
+        sum_cltr_i = np.zeros(self.n_cltr_i, np.double)
+        sum_cocltr = np.zeros((self.n_cltr_u, self.n_cltr_i), np.double)
 
         avg_cltr_u = np.zeros(self.n_cltr_u, np.double)
         avg_cltr_i = np.zeros(self.n_cltr_i, np.double)

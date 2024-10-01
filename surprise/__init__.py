@@ -17,6 +17,7 @@ from .prediction_algorithms import (
     PredictionImpossible,
     SlopeOne,
     SVD,
+    mySVD,
     SVDpp,
 )
 from .reader import Reader
@@ -30,6 +31,7 @@ __all__ = [
     "KNNWithMeans",
     "KNNBaseline",
     "SVD",
+    "mySVD",
     "SVDpp",
     "NMF",
     "SlopeOne",
