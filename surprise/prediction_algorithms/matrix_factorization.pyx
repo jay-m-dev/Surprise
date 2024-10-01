@@ -198,6 +198,12 @@ class SVD(AlgoBase):
 
         rng = get_rng(self.random_state)
 
+        cdef double[::1] bu
+        cdef double[::1] bi
+        cdef double[:, ::1] pu
+        cdef double[:, ::1] qi
+
+
         # if partial fit, start with previous model
         if partial and self.fitted:
             pdb.set_trace()
@@ -207,13 +213,13 @@ class SVD(AlgoBase):
             qu = self.qi
         else:
             # user biases
-            cdef double [::1] bu = np.zeros(trainset.n_users, dtype=np.double)
+            bu = np.zeros(trainset.n_users, dtype=np.double)
             # item biases
-            cdef double [::1] bi = np.zeros(trainset.n_items, dtype=np.double)
+            bi = np.zeros(trainset.n_items, dtype=np.double)
             # user factors
-            cdef double [:, ::1] pu = rng.normal(self.init_mean, self.init_std_dev, size=(trainset.n_users, self.n_factors))
+            pu = rng.normal(self.init_mean, self.init_std_dev, size=(trainset.n_users, self.n_factors))
             # item factors
-            cdef double [:, ::1] qi = rng.normal(self.init_mean, self.init_std_dev, size=(trainset.n_items, self.n_factors))
+            qi = rng.normal(self.init_mean, self.init_std_dev, size=(trainset.n_items, self.n_factors))
 
         cdef int u, i, f
         cdef int n_factors = self.n_factors
